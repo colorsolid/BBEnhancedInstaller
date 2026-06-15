@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BBEnhancedInstaller": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\color\\Documents\\install test\""
+    }
+  }
+}
