@@ -44,59 +44,64 @@ class Program
             string txtPath = Path.Combine(installPath, "bbe.txt");
             backupsPath = Path.Join(installPath, "_BBE_backup");
             DialogResult result;
-            if (Path.Exists(txtPath))
+            do
             {
-                result = MessageBox.Show(
-                    "Mod found in selected folder. Remove mod and restore backups?",
-                    "Confirmation",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly
-                );
-
-                if (result == DialogResult.Yes)
+                if (Path.Exists(txtPath))
                 {
-                    RemoveFiles();
-                    bool backupsRestored = RestoreBackups();
-                    MessageBox.Show($"Mod removed, backups {(backupsRestored ? "" : "could not be ")}restored.");
-                    return;
-                }
+                    result = MessageBox.Show(
+                        "Mod found in selected folder. Remove mod and restore backups?",
+                        "Confirmation",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly
+                    );
 
-                result = MessageBox.Show(
-                    "Ovewrite existing mod installation?",
-                    "Confirmation",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly
-                );
+                    if (result == DialogResult.Yes)
+                    {
+                        RemoveFiles();
+                        bool backupsRestored = RestoreBackups();
+                        MessageBox.Show($"Mod removed, backups {(backupsRestored ? "" : "could not be ")}restored.");
+                        continue;
+                    }
 
-                if (result != DialogResult.Yes)
-                {
-                    return;
-                }
-                Console.WriteLine("Overwriting mod if exists");
+                    result = MessageBox.Show(
+                        "Ovewrite existing mod installation?",
+                        "Confirmation",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly
+                    );
 
-                result = MessageBox.Show(
-                    "Overwrite backups?",
-                    "Confirmation",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly
-                );
+                    if (result != DialogResult.Yes)
+                    {
+                        MessageBox.Show("Installation cancelled.");
+                        return;
+                    }
+                    Console.WriteLine("Overwriting mod if exists");
 
-                overwriteBackups = result == DialogResult.Yes;
-                if (overwriteBackups == true)
-                {
-                    Console.WriteLine("Overwriting backups");
-                }
-                else
-                {
-                    Console.WriteLine("Not overwriting backups");
+                    result = MessageBox.Show(
+                        "Overwrite backups?",
+                        "Confirmation",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly
+                    );
+
+                    overwriteBackups = result == DialogResult.Yes;
+                    if (overwriteBackups == true)
+                    {
+                        Console.WriteLine("Overwriting backups");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Not overwriting backups");
+                    }
                 }
             }
+            while (false);
 
             result = MessageBox.Show(
                 $"Install to \"{installPath}\"?{(overwriteBackups != false ? "\nBackups will be created." : "\nExisting backups will be preserved.")}",
